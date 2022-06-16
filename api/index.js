@@ -70,6 +70,22 @@ app.get("/me", verifyToken, async (req, res) => {
   });
 });
 
+app.post("/users/:userId/validate", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await AuthArmor.getUserById({
+      userId
+    });
+
+    // TODO: Verify the user is a new one in the DB and not one that was registered already...
+
+    res.json({ verified: true, user });
+  } catch (err) {
+    console.error(err);
+    res.status(400).json(err);
+  }
+});
+
 app.post("/auth/:type/validate", async (req, res) => {
   try {
     const { requestId, token } = req.body;
