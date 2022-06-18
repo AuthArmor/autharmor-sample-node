@@ -105,6 +105,25 @@ app.post("/auth/:type/validate", async (req, res) => {
   }
 });
 
+app.post("/register/:type/validate", async (req, res) => {
+  try {
+    const { requestId, token } = req.body;
+    const { type } = req.params;
+    const status = await AuthArmor.verifyRegisterRequest({
+      type,
+      requestId,
+      token
+    });
+    res.json({
+      verified: status.verified,
+      token: generateAccessToken(status.requestDetails)
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(400).json(err);
+  }
+});
+
 console.log(`🎉 Server is up and running at port ${process.env.PORT}!`);
 
 Server.listen(process.env.PORT);
