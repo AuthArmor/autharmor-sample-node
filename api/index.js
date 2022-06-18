@@ -105,6 +105,7 @@ app.post("/auth/:type/validate", async (req, res) => {
   }
 });
 
+// Register validation
 app.post("/register/:type/validate", async (req, res) => {
   try {
     const { requestId, token } = req.body;
