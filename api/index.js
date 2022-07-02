@@ -64,8 +64,8 @@ app.get("/me", verifyToken, async (req, res) => {
 
   res.json({
     user: {
-      nickname: req.user.nickname,
-      profileId: req.user.auth_profile_id
+      username: req.user.username,
+      user_id: req.user.user_id
     }
   });
 });
@@ -87,41 +87,47 @@ app.post("/users/:userId/validate", async (req, res) => {
 });
 
 app.post("/auth/:type/validate", async (req, res) => {
+  const { requestId, token } = req.body;
+  const { type } = req.params;
+  const payload = {
+    type,
+    requestId,
+    token
+  };
+  console.log(payload);
   try {
-    const { requestId, token } = req.body;
-    const { type } = req.params;
-    const status = await AuthArmor.verifyAuthRequest({
-      type,
-      requestId,
-      token
-    });
+    const status = await AuthArmor.verifyAuthRequest(payload);
     res.json({
       verified: status.verified,
+      requestDetails: status.requestDetails,
       token: generateAccessToken(status.requestDetails)
     });
   } catch (err) {
     console.error(err);
-    res.status(400).json(err);
+    res.status(400).json({ err, payload });
   }
 });
 
 // Register validation
 app.post("/register/:type/validate", async (req, res) => {
+  const { requestId, token } = req.body;
+  const { type } = req.params;
+  const payload = {
+    type,
+    requestId,
+    token
+  };
+  console.log(payload);
   try {
-    const { requestId, token } = req.body;
-    const { type } = req.params;
-    const status = await AuthArmor.verifyRegisterRequest({
-      type,
-      requestId,
-      token
-    });
+    const status = await AuthArmor.verifyRegisterRequest(payload);
     res.json({
       verified: status.verified,
+      requestDetails: status.requestDetails,
       token: generateAccessToken(status.requestDetails)
     });
   } catch (err) {
     console.error(err);
-    res.status(400).json(err);
+    res.status(400).json({ err, payload });
   }
 });
 
