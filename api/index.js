@@ -60,8 +60,6 @@ app.post("/enroll/webauthn/finish", async (req, res) => {
 });
 
 app.get("/me", verifyToken, async (req, res) => {
-  console.log(req.user);
-
   res.json({
     user: {
       username: req.user.username,
@@ -94,7 +92,7 @@ app.post("/auth/:type/validate", async (req, res) => {
     requestId,
     token
   };
-  console.log(payload);
+
   try {
     const status = await AuthArmor.verifyAuthRequest(payload);
     res.json({
@@ -117,7 +115,7 @@ app.post("/register/:type/validate", async (req, res) => {
     requestId,
     token
   };
-  console.log(payload);
+
   try {
     const status = await AuthArmor.verifyRegisterRequest(payload);
     res.json({
