@@ -95,6 +95,9 @@ app.post("/auth/:type/validate", async (req, res) => {
 
   try {
     const status = await AuthArmor.verifyAuthRequest(payload);
+
+    console.log(status.requestDetails);
+
     res.json({
       verified: status.verified,
       requestDetails: status.requestDetails,
