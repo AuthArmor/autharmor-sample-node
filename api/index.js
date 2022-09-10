@@ -125,7 +125,8 @@ app.post("/register/:type/validate", async (req, res) => {
     res.json({
       verified: status.verified,
       requestDetails: status.requestDetails,
-      token: generateAccessToken(status.requestDetails)
+      token: generateAccessToken(status.requestDetails),
+      version: "3.0.0-beta.27"
     });
   } catch (err) {
     console.error(err);
