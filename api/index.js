@@ -60,6 +60,7 @@ app.post("/enroll/webauthn/finish", async (req, res) => {
 });
 
 app.get("/me", verifyToken, async (req, res) => {
+  // Return currently authenticated user
   res.json({
     user: {
       username: req.user.username,
